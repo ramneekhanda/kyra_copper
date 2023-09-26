@@ -1,7 +1,9 @@
+
 mod hero;
 mod robber;
 
 use bevy::{prelude::*, window::PrimaryWindow, window::WindowMode};
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 use hero::HeroPlugin;
 use robber::RobberPlugin;
@@ -15,6 +17,7 @@ fn main() {
             }),
             ..default()
         }))
+    .add_plugins(WorldInspectorPlugin::new())
     .add_systems(Startup, setup_camera)
     .add_plugins((HeroPlugin::default(), RobberPlugin::default()))
     .run();

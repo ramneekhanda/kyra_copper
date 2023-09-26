@@ -10,6 +10,7 @@ authors = ["Ramneek Handa"]
 [dependencies]
 bevy = { version = "0.11.2", features = ["dynamic_linking"] }
 leafwing-input-manager = {version = "0.10.0"}
+bevy-inspector-egui = "0.19"
 
 [profile.dev]
 opt-level = 1

@@ -1,0 +1,9 @@
+{
+    tile_size: {
+        height: 32,
+        width: 32
+    },
+    floors: 3,
+
+
+}
