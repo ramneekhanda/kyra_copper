@@ -1,0 +1,13 @@
+levels:
+  - level: 1
+    floor_tile: "tiles/0.png"
+    floor_plan:
+      floor_levels: 6
+      level_width: 100
+      level_space: 200
+      elevator:
+        - 30
+        - 70
+      escalator:
+        - 90
+        - 10

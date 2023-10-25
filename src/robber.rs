@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use leafwing_input_manager::prelude::*;
+use bevy_rapier2d::prelude::*;
 
 
 /**
@@ -12,8 +13,8 @@ pub struct RobberPlugin {
 impl Plugin for RobberPlugin {
   fn build(&self, app: &mut App) {
     app.add_plugins(InputManagerPlugin::<RobberStates>::default())
-       .add_systems(Startup, spawn_robber)
-       .add_systems(Update, animate_robber);
+       .add_systems(Startup, spawn_robber);
+       //.add_systems(Update, animate_robber);
   }
 }
 
@@ -101,38 +102,43 @@ fn spawn_robber(
       SpriteSheetBundle {
         texture_atlas: sprite_sheets.items[1].tah.clone(),
         sprite: TextureAtlasSprite::new(sprite_sheets.items[1].ai.first),
-        transform: Transform::from_scale(Vec3::splat(0.2)).with_translation(Vec3::splat(-100.)),
+        transform: Transform::from_scale(Vec3::splat(0.15)).with_translation(Vec3::new(-250., -250., 0.)),
         ..default()
       },
       sprite_sheets.items[1].ai.clone(),
       sprite_sheets,
-      AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
+      //AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
       Robber,
-    ));
+      RigidBody::Dynamic,
+      GravityScale(10.),
+      AdditionalMassProperties::Mass(100.),
+      ColliderMassProperties::Density(2.0),
+      Collider::cuboid(200., 300.),
+      LockedAxes::ROTATION_LOCKED
+      ));
 }
 
-fn animate_robber(
-  time: Res<Time>,
-  asset_server: Res<AssetServer>,
-  mut texture_atlases: ResMut<Assets<TextureAtlas>>,
-  mut query: Query<(
-    &mut Handle<TextureAtlas>,
-    &mut AnimationTimer,
-    &mut TextureAtlasSprite,
-    &mut AnimationIndices,
-    &HSAList
-  ), With<Robber>>,
-) {
+// fn animate_robber(
+//   time: Res<Time>,
+//   asset_server: Res<AssetServer>,
+//   mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+//   mut query: Query<(
+//     &mut Handle<TextureAtlas>,
+//     &mut AnimationTimer,
+//     &mut TextureAtlasSprite,
+//     &mut AnimationIndices,
+//     &HSAList
+//   ), With<Robber>>,
+// ) {
 
-  for (mut hTA, mut timer, mut sprite, mut indices, hsa_list) in &mut query {
-    println!("sprite index is {}", sprite.index);
-    timer.tick(time.delta());
-    if timer.just_finished() {
-      sprite.index = if sprite.index == indices.last {
-        indices.first
-      } else {
-        sprite.index + 1
-      };
-    }
-  }
-}
+//   for (mut hTA, mut timer, mut sprite, mut indices, hsa_list) in &mut query {
+//     timer.tick(time.delta());
+//     if timer.just_finished() {
+//       sprite.index = if sprite.index == indices.last {
+//         indices.first
+//       } else {
+//         sprite.index + 1
+//       };
+//     }
+//   }
+// }
